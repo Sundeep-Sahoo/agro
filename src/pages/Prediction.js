@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { pageStyles } from '../styles';
 
 const Prediction = () => {
   const [input, setInput] = useState('');
@@ -10,19 +11,29 @@ const Prediction = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Prediction</h2>
-      <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Enter data..." style={styles.input} />
-      <button onClick={handlePredict} style={styles.button}>Predict</button>
-      <p>{result}</p>
+    <div style={pageStyles.container}>
+      <div style={pageStyles.overlay}></div>
+      <div style={pageStyles.card}>
+        <h2 style={pageStyles.title}>Prediction</h2>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          style={pageStyles.input}
+          placeholder="Enter data..."
+        />
+        <button
+          onClick={handlePredict}
+          style={pageStyles.button}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = '#218838')}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = '#28a745')}
+        >
+          Predict
+        </button>
+        <p>{result}</p>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: { padding: '20px', maxWidth: '600px', margin: '0 auto' },
-  input: { padding: '10px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' },
-  button: { padding: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }
 };
 
 export default Prediction;

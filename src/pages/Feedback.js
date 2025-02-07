@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { pageStyles } from '../styles';
 
 const Feedback = () => {
   const [feedback, setFeedback] = useState('');
@@ -9,21 +10,29 @@ const Feedback = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Feedback Form</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} style={styles.textarea} placeholder="Enter your feedback here..." />
-        <button type="submit" style={styles.button}>Submit</button>
-      </form>
+    <div style={pageStyles.container}>
+      <div style={pageStyles.overlay}></div>
+      <div style={pageStyles.card}>
+        <h2 style={pageStyles.title}>Feedback Form</h2>
+        <form onSubmit={handleSubmit}>
+          <textarea
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            style={pageStyles.textarea}
+            placeholder="Enter your feedback here..."
+          />
+          <button
+            type="submit"
+            style={pageStyles.button}
+            onMouseEnter={(e) => (e.target.style.backgroundColor = '#218838')}
+            onMouseLeave={(e) => (e.target.style.backgroundColor = '#28a745')}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: { padding: '20px', maxWidth: '600px', margin: '0 auto' },
-  form: { display: 'flex', flexDirection: 'column' },
-  textarea: { padding: '10px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' },
-  button: { padding: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }
 };
 
 export default Feedback;
