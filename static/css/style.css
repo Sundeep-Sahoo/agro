@@ -1,0 +1,221 @@
+/* ✅ General Styling */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: skyblue;
+    background-size: cover;
+    background-position: center;
+}
+
+/* ✅ Header Styling (Fixed on top) */
+header {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* ✅ Language Selector */
+#languageSelectContainer {
+    position: absolute;
+    top: 25px;
+    right: 60px;
+    z-index: 1001;
+}
+
+#languageSelect {
+    padding: 5px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+/* ✅ Navigation (Fixed Sidebar) */
+nav {
+    width: 200px;
+    background-color: #070707;
+    position: fixed;
+    left: 0;
+    top: 85px;
+    height: calc(100% - 85px);
+    padding-top: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav ul li {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+nav ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+/* ✅ Main Content */
+main {
+    margin-top: 100px;
+    margin-left: 220px;
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+}
+
+/* ✅ Intro Text Animation */
+.intro-container {
+    margin-top: 20px;
+    color: #000;
+    text-transform: capitalize;
+    animation: revealText 6s ease-in-out forwards;
+}
+
+@keyframes revealText {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.intro-container span {
+    opacity: 0;
+    display: inline-block;
+    animation: fadeInWords 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeInWords {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ✅ Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-weight: bold;
+    color: #333;
+}
+
+form input, select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    width: 100%;
+}
+
+form button {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+/* ✅ Prediction Result Table */
+#resultContainer {
+    margin-top: 20px;
+    display: none;
+}
+
+/* ✅ Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #d4edda;
+    color: black;
+    border: 2px solid black;
+}
+
+th, td {
+    border: 2px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+/* ✅ Header Background */
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* ✅ Row Hover Effect */
+tr:hover {
+    background-color: #c3e6cb;
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 600px) {
+    nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    nav ul {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    main {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    form input, form button {
+        width: 100%;
+    }
+}

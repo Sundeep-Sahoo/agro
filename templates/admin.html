@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <style>
+        /* 🔹 General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* 🔹 Header */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* 🔹 Form Container */
+        .container {
+            max-width: 500px;
+            background: white;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        /* 🔹 Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        /* 🔹 Button Styling */
+        button {
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* 🔹 Message Styling */
+        #message {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #d9534f;
+        }
+
+        /* 🔹 Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>Admin Dashboard</header>
+
+    <div class="container">
+        <h2>Update Prices</h2>
+        <form id="updateForm">
+            <label for="fertilizer_price">Fertilizer Price:</label>
+            <input type="number" id="fertilizer_price" name="fertilizer_price" required>
+
+            <label for="petrol_price">Petrol Price:</label>
+            <input type="number" id="petrol_price" name="petrol_price" required>
+
+            <label for="rainfall">Average Rainfall:</label>
+            <input type="number" id="rainfall" name="rainfall" required>
+
+            <label for="potato_price">Current Potato Price:</label>
+            <input type="number" id="potato_price" name="potato_price" required>
+
+            <button type="submit">Update Prices</button>
+        </form>
+
+        <p id="message"></p>
+    </div>
+
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // ✅ Prevent default form submission
+
+            // ✅ Collect values from form
+            const fertilizer_price = document.getElementById("fertilizer_price").value;
+            const petrol_price = document.getElementById("petrol_price").value;
+            const rainfall = document.getElementById("rainfall").value;
+            const potato_price = document.getElementById("potato_price").value;
+
+            const data = {
+                fertilizer_price: parseFloat(fertilizer_price),
+                petrol_price: parseFloat(petrol_price),
+                rainfall: parseFloat(rainfall),
+                potato_price: parseFloat(potato_price)
+            };
+
+            try {
+                // ✅ Send data to Flask API for database update
+                const response = await fetch('/update_prices', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                document.getElementById("message").innerText = result.message;
+                document.getElementById("message").style.color = "green"; // ✅ Success color
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById("message").innerText = "Error updating prices.";
+                document.getElementById("message").style.color = "red"; // ❌ Error color
+            }
+        });
+    </script>
+
+</body>
+</html>

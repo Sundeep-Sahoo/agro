@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriProphets - Predict</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1 data-translate-key="welcome">WELCOME TO AGRIPROPHETS</h1>
+        <div id="languageSelectContainer">
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="bn">Bengali</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="kn">Kannada</option>
+                <option value="gu">Gujarati</option>
+            </select>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}" data-translate-key="home"><b>HOME</b></a></li>
+            <li><a href="{{ url_for('login') }}" data-translate-key="login"><b>LOGIN/SIGNUP</b></a></li>
+            <li><a href="{{ url_for('predict') }}" data-translate-key="predict"><b>PREDICT</b></a></li>
+            <li><a href="{{ url_for('report') }}" data-translate-key="report">REPORT</a></li>
+            <li id="logoutButton" style="display: none;"><a href="#">Logout</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <h1 data-translate-key="predict">Predict</h1>
+        <form id="predictForm">
+            <label for="crop_name" data-translate-key="crop_name">Crop Name:</label>
+            <select id="crop_name" name="crop_name" required>
+                <option value="potato">Potato</option>
+            </select>
+
+            <button type="submit" data-translate-key="submit">Submit</button>
+        </form>
+
+        <!-- 🔹 Table for Prediction Results -->
+        <div id="resultContainer" style="display: none;">
+            <h2>Prediction Result</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Crop</th>
+                        <th>Date</th> <!-- ✅ Added Date Column -->
+                        <th>Predicted Output</th>
+                    </tr>
+                </thead>
+                <tbody id="resultTableBody">
+                    <!-- Data will be inserted dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const predictForm = document.getElementById('predictForm');
+            const resultContainer = document.getElementById('resultContainer');
+            const resultTableBody = document.getElementById('resultTableBody');
+    
+            predictForm.addEventListener('submit', async function (event) {
+                event.preventDefault(); // ✅ Prevent default form submission
+    
+                const crop_name = document.getElementById("crop_name").value;
+                const data = { crop_name };
+    
+                try {
+                    // ✅ Fetch 7-day predictions
+                    const response = await fetch('/predict_process', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+    
+                    const result = await response.json();
+    
+                    // ✅ Clear previous results
+                    resultTableBody.innerHTML = '';
+    
+                    // ✅ Ensure result.predictions is an array before looping
+                    if (Array.isArray(result.predictions)) {
+                        result.predictions.forEach(prediction => {
+                            const newRow = document.createElement('tr');
+    
+                            // ✅ Ensure `prediction.date` and `prediction.prediction` exist
+                            newRow.innerHTML = `
+                                <td>${result.crop_name || "N/A"}</td>
+                                <td>${prediction.date || "N/A"}</td> 
+                                <td>${prediction.prediction !== undefined ? prediction.prediction : "N/A"}</td>
+                            `;
+                            resultTableBody.appendChild(newRow);
+                        });
+    
+                        resultContainer.style.display = 'block'; // ✅ Show results table
+                    } else {
+                        console.error("Invalid response format:", result);
+                        alert("Prediction data is not available.");
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching prediction results.');
+                }
+            });
+        });
+    </script>
+    
+
+</body>
+</html>
